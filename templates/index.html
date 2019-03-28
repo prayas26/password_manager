@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Password Manager</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link id="main" rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/publisher.css') }}">
+</head>
+<body>
+<div id="wrapper" class="behind">
+<header>
+	<div class="container">
+			<div class="col-md-6 col-sm-12 wow animated fadeInUp">
+				<div class="intro-book">
+					<img src="{{ url_for('static', filename='img/key.jpg') }}" alt="">
+				</div>
+			</div>
+			<div class="col-md-6 intro-text hidden-sm hidden-xs wow animated fadeInUp">
+				<h2 class="heading">PASSWORD MANAGER</h2>
+				<h4 class="subheading">Managing passwords made easy!</h4>
+				<a href="/login" class="scrollto btn btn-white">Log in</a>
+				<a href="/register" class="btn btn-green">Register </a>
+			</div>
+	</div>
+</header>
+</div>
+<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/owl.carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='js/wow.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.onepagenav.js') }}"></script>
+<script src="{{ url_for('static', filename='js/core.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tooltip.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.form-validator.js') }}"></script>
+<script src="{{ url_for('static', filename='js/preloader.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
