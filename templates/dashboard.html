@@ -100,29 +100,36 @@ div.desc {
     color: white;
 }
 </style>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tablestyle.css') }}">
 </head>
 <body>
     <div class="topnav">
         <a href="/dashboard" class="active">Saved Passwords</a>
-        <a href="/closedrequests">Add Password</a>
+        <a href="/addpassword">Add Password</a>
+        <a href="/teams">Teams</a>
         <a href="/logout">Logout</a>
     </div>
-{% for i in range(locations|count) %}
-<div class="responsive">
-  <div class="gallery">
-    <img src="{{ img_path[i] }}" alt="{{locations[i][0]}}" width="400" height="400">
-    <div class="desc">
-        <form action="/closerequest" method="POST">
-            <p>Registered by: {{ locations[i][-1] }}</p>
-            <p>Unique ID: {{ locations[i][0] }}</p>
-            <input type="hidden" name="un_id" value="{{locations[i][0]}}">
-            <input type="submit" class="myButton" value="Close Request">
-        </form>
-    </div>
-  </div>
-</div>
-{% endfor %}
 
+    <table class="container">
+        <thead>
+            <tr>
+                <th><h1>Website</h1></th>
+                <th><h1>Username</h1></th>
+                <th><h1>Password</h1></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for i in range(10) %}
+        <tr>
+			<td>Google</td>
+			<td>9518</td>
+			<td>6369</td>
+		</tr>
+        {% endfor %}
+        </tbody>
+    </table>
 <div class="clearfix"></div>
 
 </body>

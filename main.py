@@ -41,7 +41,7 @@ def register():
 @app.route('/otpconfirm', methods=["POST"])
 def otpconfirm():
 	session["username"] = request.form["username"]
-	session["mobile"] = request.form["userid"]
+	session["mobile"] = request.form["mobile"]
 	session["password"] = request.form["user_pass"]
 	checkUser = pyBot.checkUser(session["mobile"])
 	if checkUser == None:
@@ -95,12 +95,29 @@ def validate():
 		session['usertype'] = check_user['usertype']
 		return redirect(url_for('dashboard'))
 
+@app.route('/addpassword', methods=["GET"])
+def addpassword():
+	if session["usertype"] == "admin":
+		abort(404)
+	elif session["usertype"] == "user":
+		getIds = pyBot.getInfo(session["mobile"])
+		img_path = []
+		for loc in getIds:
+			loc_file = loc["uniqueid"]+".jpg"
+			for files in os.walk(req_image):
+				if loc_file in files[2]:
+					path = os.path.join(req_image, loc_file)
+					img_path.append(path)
+		return render_template('addpassword.html', img_path=img_path, userDetails=getIds)
+	else:
+		return redirect(url_for('log_in'))
+
 @app.route('/logout')
 def logout():
 	session.pop('mobile', None)
 	session.pop('login', None)
 	session.pop('usertype', None)
-	return redirect(url_for('log_in'))
+	return redirect(url_for('index'))
 		
 @app.route('/dashboard', methods=["GET"])
 def dashboard():
