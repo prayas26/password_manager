@@ -36,28 +36,27 @@ class Database(object):
             check = cursor.fetchone()
         self.connection.commit()
 
-    def register_admin(self, adminID, adminPass):
+    def getUserPassword(self, mobile):
         with self.connection.cursor() as cursor:
-            hash_pass = genpass.User(adminID, adminPass)
-            hash_pass = hash_pass.pw_hash
-            com = "INSERT INTO users VALUES ('"+adminID+"', '"+hash_pass+"', 'admin', 'admin')"
-            cursor.execute(com)
-            check = cursor.fetchone()
-        self.connection.commit()
-
-    def addbill(self, uniqueid, cost, userid):
-        with self.connection.cursor() as cursor:
-            com = "INSERT INTO reimbursement VALUES ('"+uniqueid+"', '"+cost+"', '"+userid+"', 'pending')"
-            cursor.execute(com)
-        self.connection.commit()
-
-    def getInfo(self, mobile, status):
-        with self.connection.cursor() as cursor:
-            com = "SELECT * FROM reimbursement WHERE userid='"+mobile+"' AND status='"+status+"'"
+            com = "SELECT * FROM u"+mobile+""
             cursor.execute(com)
             check = cursor.fetchall()
         self.connection.commit()
         return check
+
+    def createUserDB(self, mobile):
+        with self.connection.cursor() as cursor:
+            com = """CREATE TABLE u"""+mobile+"""
+                (website char(50) NOT NULL,
+                username char(50) NOT NULL,
+                userpass char(100) NOT NULL);"""
+            cursor.execute(com)
+
+    def addUserPassword(self, website, userID, userPass, mobile):
+        with self.connection.cursor() as cursor:
+            com = "INSERT into u"+mobile+" VALUES('"+website+"', '"+userID+"', '"+userPass+"')"
+            cursor.execute(com)
+        self.connection.commit()
 
     def checkUser(self, userid):
         with self.connection.cursor() as cursor:
@@ -66,21 +65,3 @@ class Database(object):
             check = cursor.fetchone()
         self.connection.commit()
         return check
-
-    def getBills(self, status):
-        with self.connection.cursor() as cursor:
-            com = "SELECT * FROM reimbursement WHERE status='"+status+"'"
-            cursor.execute(com)
-            check = cursor.fetchall()
-        self.connection.commit()
-        return check
-
-    def closeRequest(self, uniqueid):
-        with self.connection.cursor() as cursor:
-            com = "UPDATE reimbursement SET status='complete' WHERE uniqueid='"+uniqueid+"'"
-            try:
-                cursor.execute(com)
-                self.connection.commit()
-                return "complete"
-            except:
-                return "error"

@@ -121,11 +121,11 @@ div.desc {
             </tr>
         </thead>
         <tbody>
-        {% for i in range(10) %}
+        {% for i in range(getPasswords|count) %}
         <tr>
-			<td>Google</td>
-			<td>9518</td>
-			<td>6369</td>
+			<td>{{ getPasswords[i]["website"] }}</td>
+			<td>{{ getPasswords[i]["username"] }}</td>
+			<td>{{ getPasswords[i]["userpass"] }}</td>
 		</tr>
         {% endfor %}
         </tbody>

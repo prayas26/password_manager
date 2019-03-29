@@ -67,6 +67,7 @@ def registration():
 		password = session["password"]
 		try:
 			pyBot.register_user(mobile, password, session["username"])
+			pyBot.createUserDB(mobile)
 			session.pop("username", None)
 			session.pop('password', None)
 			session.pop('mobile', None)
@@ -97,20 +98,20 @@ def validate():
 
 @app.route('/addpassword', methods=["GET"])
 def addpassword():
-	if session["usertype"] == "admin":
-		abort(404)
-	elif session["usertype"] == "user":
-		getIds = pyBot.getInfo(session["mobile"])
-		img_path = []
-		for loc in getIds:
-			loc_file = loc["uniqueid"]+".jpg"
-			for files in os.walk(req_image):
-				if loc_file in files[2]:
-					path = os.path.join(req_image, loc_file)
-					img_path.append(path)
-		return render_template('addpassword.html', img_path=img_path, userDetails=getIds)
-	else:
-		return redirect(url_for('log_in'))
+	if 'login' in session:
+		return render_template('addpassword.html')
+
+@app.route('/add', methods=["POST"])
+def add():
+	if 'login' in session:
+		link = request.form["website"]
+		userid = request.form["addUserID"]
+		password = request.form["addUserPass"]
+		try:
+			pyBot.addUserPassword(link, userid, password, session["mobile"])
+			return redirect(url_for('dashboard'))
+		except:
+			return render_template("error.html")
 
 @app.route('/logout')
 def logout():
@@ -122,7 +123,9 @@ def logout():
 @app.route('/dashboard', methods=["GET"])
 def dashboard():
 	if 'login' in session:
-		return render_template('dashboard.html')
+		getPasswords = pyBot.getUserPassword(session["mobile"])
+		print(getPasswords)
+		return render_template('dashboard.html', getPasswords=getPasswords)
 	else:
 		return redirect(url_for('log_in'))
 
