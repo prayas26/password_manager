@@ -34,7 +34,7 @@ def log_in():
 @app.route('/register')
 def register():
 	if 'login' in session:
-		return redirect(url_for('index'))
+		return redirect(url_for('dashboard'))
 	return render_template('register.html')
 
 
@@ -126,6 +126,13 @@ def dashboard():
 		getPasswords = pyBot.getUserPassword(session["mobile"])
 		print(getPasswords)
 		return render_template('dashboard.html', getPasswords=getPasswords)
+	else:
+		return redirect(url_for('log_in'))
+
+@app.route('/teams', methods=["GET"])
+def teams():
+	if 'login' in session:
+		return render_template('teams.html')
 	else:
 		return redirect(url_for('log_in'))
 
