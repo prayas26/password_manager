@@ -65,3 +65,25 @@ class Database(object):
             check = cursor.fetchone()
         self.connection.commit()
         return check
+
+    def checkTeam(self, teamid):
+        with self.connection.cursor() as cursor:
+            com = "SELECT * FROM teams WHERE teamName='"+teamid+"'"
+            cursor.execute(com)
+            check = cursor.fetchone()
+        self.connection.commit()
+        return check
+
+    def addToTeam(self, team, user, userType):
+        with self.connection.cursor() as cursor:
+            com = "INSERT into teams VALUES('"+team+"', '"+user+"', '"+userType+"')"
+            cursor.execute(com)
+        self.connection.commit()
+
+    def checkUserTeams(self, userid):
+        with self.connection.cursor() as cursor:
+            com = "SELECT * from teams WHERE userid='"+userid+"'"
+            print(com)
+            cursor.execute(com)
+            check = cursor.fetchall()
+        return check

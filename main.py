@@ -132,9 +132,47 @@ def dashboard():
 @app.route('/teams', methods=["GET"])
 def teams():
 	if 'login' in session:
-		return render_template('teams.html')
+		userTeams = pyBot.checkUserTeams(session["mobile"])
+		print(userTeams)
+		return render_template('teams.html', userTeams=userTeams)
 	else:
 		return redirect(url_for('log_in'))
+
+@app.route('/createTeam', methods=["POST"])
+def createTeam():
+	if 'login' in session:
+		return render_template('createTeam.html')
+	else:
+		return redirect(url_for('log_in'))
+
+@app.route('/create', methods=["POST"])
+def create():
+	if 'login' in session:
+		team = request.form["teamName"]
+		user1 = request.form["addUserID1"]
+		user2 = request.form["addUserID2"]
+		user3 = request.form["addUserID3"]
+		checkUser1 = pyBot.checkUser(user1)
+		checkUser2 = pyBot.checkUser(user2)
+		checkUser3 = pyBot.checkUser(user3)
+		if checkUser1 == None:
+			return render_template('notRegistered.html')
+		elif checkUser2 == None and user2 != "":
+			return render_template('notRegistered.html')
+		elif checkUser3 == None and user3 != "":
+			return render_template('notRegistered.html')
+		elif user2 == "" and user3 == "":
+			pyBot.addToTeam(team, session["mobile"], "admin")
+			pyBot.addToTeam(team, user1, "user")
+			return render_template('teamCreated.html')
+		elif user2 == "":
+			pyBot.addToTeam(team, session["mobile"], "admin")
+			pyBot.addToTeam(team, user3, "user")
+			return render_template('teamCreated.html')
+		elif user3 == "":
+			pyBot.addToTeam(team, session["mobile"], "admin")
+			pyBot.addToTeam(team, user2, "user")
+			return render_template('teamCreated.html')			
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

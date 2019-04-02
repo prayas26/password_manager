@@ -102,6 +102,7 @@ div.desc {
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/addpassword.css') }}">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -116,11 +117,17 @@ div.desc {
     </div>
 
     <div class="container">
-        <form action="/add" method="post">
+        <form action="/createTeam" method="post">
             <div class="row">
                 <h4>Your Teams</h4>
+                {% for i in range(userTeams|count) %}
                 <div class="input-group input-group-icon">
-                    <button class="button  arrow">Read more</button>
+                    <input type="text" name="team" placeholder="{{ userTeams[i]['teamName'] }}" required readonly/>
+                    <div class="input-icon"><i class="fa fa-users"></i></div>
+                </div>
+                {% endfor %}
+                <div class="input-group input-group-icon">
+                    <button class="button  arrow">Create Team</button>
                 </div>
             </div>
         </form>

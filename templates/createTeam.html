@@ -17,23 +17,29 @@
     </div>
 
     <div class="container">
-        <form action="/add" method="post">
+        <form action="/create" method="post">
             <div class="row">
-                <h4>Account</h4>
+                <h3>Account</h3>
+                <h5>A team can contain maximum 3 members. Members can not be added after creating a team.<br>
+                Add atleast one member in the team.</h5>
                 <div class="input-group input-group-icon">
-                    <input type="text" name="website" placeholder="Website" required/>
-                    <div class="input-icon"><i class="fa fa-link"></i></div>
+                    <input type="text" name="teamName" placeholder="Team Name" required/>
+                    <div class="input-icon"><i class="fa fa-users"></i></div>
                 </div>
                 <div class="input-group input-group-icon">
-                    <input type="text" name="addUserID" placeholder="Username / E-Mail Address" required/>
-                    <div class="input-icon"><i class="fa fa-envelope"></i></div>
+                    <input type="text" name="addUserID1" placeholder="Add User 1" required/>
+                    <div class="input-icon"><i class="fa fa-user"></i></div>
                 </div>
                 <div class="input-group input-group-icon">
-                    <input type="password" name="addUserPass" placeholder="Password" required/>
-                    <div class="input-icon"><i class="fa fa-key"></i></div>
+                    <input type="text" name="addUserID2" placeholder="Add User 2"/>
+                    <div class="input-icon"><i class="fa fa-user"></i></div>
+                </div>
+                <div class="input-group input-group-icon">
+                    <input type="text" name="addUserID3" placeholder="Add User 3"/>
+                    <div class="input-icon"><i class="fa fa-user"></i></div>
                 </div>
                 <div class="input-group input-group-icon input-icon">
-                    <input type="submit" value="Add Password">
+                    <input type="submit" value="Create">
                 </div>
             </div>
         </form>
