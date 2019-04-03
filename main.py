@@ -167,10 +167,12 @@ def create():
 			return render_template('teamCreated.html')
 		elif user2 == "":
 			pyBot.addToTeam(team, session["mobile"], "admin")
+			pyBot.addToTeam(team, user1, "user")
 			pyBot.addToTeam(team, user3, "user")
 			return render_template('teamCreated.html')
 		elif user3 == "":
 			pyBot.addToTeam(team, session["mobile"], "admin")
+			pyBot.addToTeam(team, user1, "user")
 			pyBot.addToTeam(team, user2, "user")
 			return render_template('teamCreated.html')			
 
