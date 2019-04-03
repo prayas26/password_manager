@@ -164,17 +164,32 @@ def create():
 		elif user2 == "" and user3 == "":
 			pyBot.addToTeam(team, session["mobile"], "admin")
 			pyBot.addToTeam(team, user1, "user")
+			pyBot.createTeamDB(team)
 			return render_template('teamCreated.html')
 		elif user2 == "":
 			pyBot.addToTeam(team, session["mobile"], "admin")
 			pyBot.addToTeam(team, user1, "user")
 			pyBot.addToTeam(team, user3, "user")
+			pyBot.createTeamDB(team)
 			return render_template('teamCreated.html')
 		elif user3 == "":
 			pyBot.addToTeam(team, session["mobile"], "admin")
 			pyBot.addToTeam(team, user1, "user")
 			pyBot.addToTeam(team, user2, "user")
-			return render_template('teamCreated.html')			
+			pyBot.createTeamDB(team)
+			return render_template('teamCreated.html')
+
+@app.route('/teams/<teamName>', methods=["GET"])
+def getTeam(teamName):
+	if 'login' in session:
+		check = pyBot.checkTeamAccess(session["mobile"], teamName)
+		if check != None:
+			checkTeam = pyBot.getTeamPassword(teamName)
+			return render_template('showTeam.html', checkTeam=checkTeam)
+		else:
+			return render_template('noTeamAccess.html')
+	else:
+		return redirect(url_for('log_in'))
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

@@ -51,6 +51,14 @@ class Database(object):
                 username char(50) NOT NULL,
                 userpass char(100) NOT NULL);"""
             cursor.execute(com)
+    
+    def createTeamDB(self, team):
+        with self.connection.cursor() as cursor:
+            com = """CREATE TABLE t_"""+team+"""
+                (website char(50) NOT NULL,
+                username char(50) NOT NULL,
+                userpass char(100) NOT NULL);"""
+            cursor.execute(com)
 
     def addUserPassword(self, website, userID, userPass, mobile):
         with self.connection.cursor() as cursor:
@@ -86,4 +94,20 @@ class Database(object):
             print(com)
             cursor.execute(com)
             check = cursor.fetchall()
+        return check
+
+    def checkTeamAccess(self, userid, teamName):
+        with self.connection.cursor() as cursor:
+            com = "SELECT * from teams WHERE userid='"+userid+"' and teamName='"+teamName+"'"
+            print(com)
+            cursor.execute(com)
+            check = cursor.fetchone()
+        return check
+
+    def getTeamPassword(self, team):
+        with self.connection.cursor() as cursor:
+            com = "SELECT * FROM t_"+team+""
+            cursor.execute(com)
+            check = cursor.fetchall()
+        self.connection.commit()
         return check
