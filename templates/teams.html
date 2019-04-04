@@ -122,7 +122,7 @@ div.desc {
                 <h4>Your Teams</h4>
                 {% for i in range(userTeams|count) %}
                 <div class="input-group input-group-icon">
-                    <input type="text" name="team" placeholder="{{ userTeams[i]['teamName'] }}" required readonly/>
+                    <a href="/teams/{{ userTeams[i]['teamName'] }}"><input type="text" name="team" placeholder="{{ userTeams[i]['teamName'] }}" required readonly/>
                     <div class="input-icon"><i class="fa fa-users"></i></div>
                 </div>
                 {% endfor %}

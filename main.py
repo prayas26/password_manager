@@ -22,7 +22,10 @@ def otp_generator(size=4, chars=string.digits):
 
 @app.route('/')
 def index():
-	return render_template("index.html")
+	if 'login' in session:
+		return redirect(url_for('dashboard'))
+	else:
+		return render_template("index.html")
 
 @app.route('/login')
 def log_in():
@@ -155,29 +158,32 @@ def create():
 		checkUser1 = pyBot.checkUser(user1)
 		checkUser2 = pyBot.checkUser(user2)
 		checkUser3 = pyBot.checkUser(user3)
-		if checkUser1 == None:
-			return render_template('notRegistered.html')
-		elif checkUser2 == None and user2 != "":
-			return render_template('notRegistered.html')
-		elif checkUser3 == None and user3 != "":
-			return render_template('notRegistered.html')
-		elif user2 == "" and user3 == "":
-			pyBot.addToTeam(team, session["mobile"], "admin")
-			pyBot.addToTeam(team, user1, "user")
-			pyBot.createTeamDB(team)
-			return render_template('teamCreated.html')
-		elif user2 == "":
-			pyBot.addToTeam(team, session["mobile"], "admin")
-			pyBot.addToTeam(team, user1, "user")
-			pyBot.addToTeam(team, user3, "user")
-			pyBot.createTeamDB(team)
-			return render_template('teamCreated.html')
-		elif user3 == "":
-			pyBot.addToTeam(team, session["mobile"], "admin")
-			pyBot.addToTeam(team, user1, "user")
-			pyBot.addToTeam(team, user2, "user")
-			pyBot.createTeamDB(team)
-			return render_template('teamCreated.html')
+		if pyBot.checkTeam(team) == None:
+			if checkUser1 == None:
+				return render_template('notRegistered.html')
+			elif checkUser2 == None and user2 != "":
+				return render_template('notRegistered.html')
+			elif checkUser3 == None and user3 != "":
+				return render_template('notRegistered.html')
+			elif user2 == "" and user3 == "":
+				pyBot.addToTeam(team, session["mobile"], "admin")
+				pyBot.addToTeam(team, user1, "user")
+				pyBot.createTeamDB(team)
+				return render_template('teamCreated.html')
+			elif user2 == "":
+				pyBot.addToTeam(team, session["mobile"], "admin")
+				pyBot.addToTeam(team, user1, "user")
+				pyBot.addToTeam(team, user3, "user")
+				pyBot.createTeamDB(team)
+				return render_template('teamCreated.html')
+			elif user3 == "":
+				pyBot.addToTeam(team, session["mobile"], "admin")
+				pyBot.addToTeam(team, user1, "user")
+				pyBot.addToTeam(team, user2, "user")
+				pyBot.createTeamDB(team)
+				return render_template('teamCreated.html')
+		else:
+			return render_template('teamExists.html', team=team)
 
 @app.route('/teams/<teamName>', methods=["GET"])
 def getTeam(teamName):
@@ -185,11 +191,27 @@ def getTeam(teamName):
 		check = pyBot.checkTeamAccess(session["mobile"], teamName)
 		if check != None:
 			checkTeam = pyBot.getTeamPassword(teamName)
-			return render_template('showTeam.html', checkTeam=checkTeam)
+			return render_template('showTeam.html', checkTeam=checkTeam, teamName=teamName, admin=check)
 		else:
 			return render_template('noTeamAccess.html')
 	else:
 		return redirect(url_for('log_in'))
+
+@app.route('/delete/<teamName>', methods=["GET"])
+def deleteTeam(teamName):
+	if 'login' in session:
+		check = pyBot.checkTeamAccess(session["mobile"], teamName)
+		if check != None:
+			isAdmin = check["userType"]
+			if isAdmin == "admin":
+				pyBot.deleteTeam(teamName)
+				return render_template('delete.html')
+			else:
+				abort(404)
+		else:
+			abort(404)
+	else:
+		abort(404)
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

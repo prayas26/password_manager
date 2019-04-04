@@ -111,3 +111,16 @@ class Database(object):
             check = cursor.fetchall()
         self.connection.commit()
         return check
+
+    def removeTeam(self, teamName):
+        with self.connection.cursor() as cursor:
+            com = "DELETE from teams WHERE teamName='"+teamName+"'"
+            cursor.execute(com)
+        self.connection.commit()        
+
+    def deleteTeam(self, teamName):
+        with self.connection.cursor() as cursor:
+            com = "DROP table t_"+teamName
+            cursor.execute(com)
+        self.connection.commit()
+        self.removeTeam(teamName)

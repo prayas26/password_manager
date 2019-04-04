@@ -99,6 +99,84 @@ div.desc {
     background-color: #4CAF50;
     color: white;
 }
+
+.button {
+  display: inline-block;
+  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  padding: 0.8em 1.4em;
+  border: none;
+  color:black;
+  transition: 0.2s;
+  background-color:#0e69d1;
+}
+.button:before,
+.button:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding-top: inherit;
+  padding-bottom: inherit;
+  width: 2.8em;
+  content: "\00a0";
+  font-family: 'FontAwesome', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  transition: 0.2s;
+  transform-origin: 50% 60%;
+}
+.button:hover {
+  background: #dd3f0e;
+}
+.button:active,
+.button:focus {
+  background: #dd3f0e;
+  outline: none;
+}
+.button {
+  min-width: 15em;
+}
+
+.button1 {
+  display: inline-block;
+  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  padding: 0.8em 1.4em;
+  border: none;
+  color:black;
+  transition: 0.2s;
+  background-color:#0e69d1;
+}
+.button1:before,
+.button1:after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding-top: inherit;
+  padding-bottom: inherit;
+  width: 2.8em;
+  content: "\00a0";
+  font-family: 'FontAwesome', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  transition: 0.2s;
+  transform-origin: 50% 60%;
+}
+.button1:hover {
+  background: #0edd42;
+}
+.button1:active,
+.button1:focus {
+  background: #05cc47;
+  outline: none;
+}
+.button1 {
+  min-width: 15em;
+}
 </style>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -130,6 +208,10 @@ div.desc {
         {% endfor %}
         </tbody>
     </table>
+    <a href="/addTeamPassword/{{ teamName }}"><button class="button1 arrow">Add Password</button></a>
+    {% if admin['userType'] == "admin" %}
+        <a href="/delete/{{ teamName }}"><button class="button arrow">Delete Team</button></a>
+    {% endif %}
 <div class="clearfix"></div>
 
 </body>
