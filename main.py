@@ -223,13 +223,36 @@ def showPassword():
 	decryptPass = getEncrypt.decryptPassword(getPass)
 	return render_template('showPassword.html', getPass=decryptPass)
 
-@app.route('/addTeamPassword/<teamname>', methods=["POST"])
-def addTeamPassword():
+@app.route('/addTeamPassword/<teamName>', methods=["POST", "GET"])
+def addTeamPassword(teamName):
 	if 'login' in session:
-		return render_template('addteampassword.html')
+		return render_template('addteampassword.html', teamName=teamName)
 	else:
 		abort(404)
 
+@app.route('/addedTeamPassword', methods=["POST"])
+def addedTeamPassword():
+	if 'login' in session:
+		team = request.form["teamName"]
+		link = request.form["website"]
+		userid = request.form["addUserID"]
+		password = request.form["addUserPass"]
+		encryptedPass = getEncrypt.encryptPassword(password)
+		try:
+			pyBot.addTeamPassword(team, link, userid, encryptedPass)
+			return redirect('/teams/'+team)
+			# return render_template("index.html")
+		except:
+			return render_template("error.html")
+
+@app.route('/showTeamPassword/<teamName>', methods=["POST"])
+def showTeamPassword(teamName):
+	website = request.form["website"]
+	username = request.form["username"]
+	getPass = pyBot.retrieveTeamPassword(teamName, website, username)
+	getPass = getPass["userpass"]
+	decryptPass = getEncrypt.decryptPassword(getPass)
+	return render_template('showPassword.html', getPass=decryptPass)
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

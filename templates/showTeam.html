@@ -100,49 +100,8 @@ div.desc {
     color: white;
 }
 
-.button {
-  display: inline-block;
-  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  position: relative;
-  padding: 0.8em 1.4em;
-  border: none;
-  color:black;
-  transition: 0.2s;
-  background-color:#0e69d1;
-}
-.button:before,
-.button:after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  padding-top: inherit;
-  padding-bottom: inherit;
-  width: 2.8em;
-  content: "\00a0";
-  font-family: 'FontAwesome', sans-serif;
-  font-size: 1.2em;
-  text-align: center;
-  transition: 0.2s;
-  transform-origin: 50% 60%;
-}
-.button:hover {
-  background: #dd3f0e;
-}
-.button:active,
-.button:focus {
-  background: #dd3f0e;
-  outline: none;
-}
-.button {
-  min-width: 15em;
-}
-
 .button1 {
-  display: inline-block;
   font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
   position: relative;
   padding: 0.8em 1.4em;
   border: none;
@@ -153,13 +112,6 @@ div.desc {
 .button1:before,
 .button1:after {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  padding-top: inherit;
-  padding-bottom: inherit;
-  width: 2.8em;
-  content: "\00a0";
   font-family: 'FontAwesome', sans-serif;
   font-size: 1.2em;
   text-align: center;
@@ -174,9 +126,34 @@ div.desc {
   background: #05cc47;
   outline: none;
 }
-.button1 {
-  min-width: 15em;
+
+.button {
+  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+  position: relative;
+  padding: 0.8em .4em;
+  border: none;
+  color:black;
+  transition: 0.2s;
+  background-color:#0e69d1;
 }
+.button:before,
+.button:after {
+  position: absolute;
+  font-family: 'FontAwesome', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  transition: 0.2s;
+  transform-origin: 50% 60%;
+}
+.button:hover {
+  background: #d8440a;
+}
+.button:active,
+.button:focus {
+  background: #d8440a;
+  outline: none;
+}
+
 </style>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -191,26 +168,31 @@ div.desc {
     </div>
 
     <table class="container">
+        <h3>Team: {{ teamName }}</h3>
         <thead>
             <tr>
                 <th><h1>Website</h1></th>
                 <th><h1>Username</h1></th>
                 <th><h1>Password</h1></th>
+                <th><h1>Delete</h1></th>
             </tr>
         </thead>
         <tbody>
         {% for i in range(checkTeam|count) %}
         <tr>
-            <form>
+            <form method="POST">
                 <td>{{ checkTeam[i]["website"] }}</td>
+                <input type="hidden" name="website" value='{{ checkTeam[i]["website"] }}'>
                 <td>{{ checkTeam[i]["username"] }}</td>
-                <td>{{ checkTeam[i]["userpass"] }}</td>
-                <td><button formaction="/deletesomething">Delete Button</button></td>
+                <input type="hidden" name="username" value='{{ checkTeam[i]["username"] }}'>
+                <td><button class="button1 arrow" formaction="/showTeamPassword/{{ teamName }}">Show Password</button></td>
+                <td><button class="button arrow" formaction="/deletesomething">Delete Password</button></td>
             </form>
 		</tr>
         {% endfor %}
         </tbody>
     </table>
+
     <a href="/addTeamPassword/{{ teamName }}"><button class="button1 arrow">Add Password</button></a>
     {% if admin['userType'] == "admin" %}
         <a href="/delete/{{ teamName }}"><button class="button arrow">Delete Team</button></a>

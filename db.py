@@ -48,7 +48,7 @@ class Database(object):
             com = """CREATE TABLE u"""+mobile+"""
                 (website char(50) NOT NULL,
                 username char(50) NOT NULL,
-                userpass char(200) NOT NULL);"""
+                userpass char(250) NOT NULL);"""
             cursor.execute(com)
     
     def createTeamDB(self, team):
@@ -56,7 +56,7 @@ class Database(object):
             com = """CREATE TABLE t_"""+team+"""
                 (website char(50) NOT NULL,
                 username char(50) NOT NULL,
-                userpass char(200) NOT NULL);"""
+                userpass char(250) NOT NULL);"""
             cursor.execute(com)
 
     def addUserPassword(self, website, userID, userPass, mobile):
@@ -125,6 +125,19 @@ class Database(object):
     def retrievePassword(self, mobile, website, username):
         with self.connection.cursor() as cursor:
             com = "SELECT userpass from u"+mobile+" WHERE website='"+website+"' and username='"+username+"'"
+            cursor.execute(com)
+            checkPass = cursor.fetchone()
+        return checkPass
+
+    def addTeamPassword(self, team, website, username, password):
+        with self.connection.cursor() as cursor:
+            com = "INSERT into t_"+team+" VALUES('"+website+"', '"+username+"', '"+password+"')"
+            cursor.execute(com)
+        self.connection.commit()
+
+    def retrieveTeamPassword(self, team, website, username):
+        with self.connection.cursor() as cursor:
+            com = "SELECT userpass from t_"+team+" WHERE website='"+website+"' and username='"+username+"'"
             cursor.execute(com)
             checkPass = cursor.fetchone()
         return checkPass
