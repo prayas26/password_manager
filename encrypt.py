@@ -17,13 +17,18 @@ import key
 #     backend=default_backend()
 # )
 
-getKey = key.passKey
-fern = Fernet(getKey)
+class Cipher(object):
+    def __init__(self):
+        self.getKey = key.passKey
 
-def encryptPassword(userPass):
-    encrypted = fern.encrypt(userPass)
-    return encrypted
+    def encryptPassword(self, userPass):
+        fern = Fernet(self.getKey)
+        userPass = userPass.encode()
+        encrypted = fern.encrypt(userPass)
+        return encrypted
 
-def decryptPassword(hashPass):
-    decrypted = fern.decrypt(hashPass)
-    return decrypted
+    def decryptPassword(self, hashPass):
+        fern = Fernet(self.getKey)
+        hashPass = hashPass.encode()
+        decrypted = fern.decrypt(hashPass)
+        return decrypted

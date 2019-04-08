@@ -7,8 +7,10 @@ import os
 import db
 import genpass
 import otp_gen
+import encrypt
 
 pyBot = db.Database()
+getEncrypt = encrypt.Cipher()
 
 app=Flask(__name__)
 app.secret_key = "smartBuddy"
@@ -100,6 +102,8 @@ def validate():
 def addpassword():
 	if 'login' in session:
 		return render_template('addpassword.html')
+	else:
+		abort(404)
 
 @app.route('/add', methods=["POST"])
 def add():
@@ -107,8 +111,9 @@ def add():
 		link = request.form["website"]
 		userid = request.form["addUserID"]
 		password = request.form["addUserPass"]
+		newPassword = getEncrypt.encryptPassword(password)
 		try:
-			pyBot.addUserPassword(link, userid, password, session["mobile"])
+			pyBot.addUserPassword(link, userid, newPassword, session["mobile"])
 			return redirect(url_for('dashboard'))
 		except:
 			return render_template("error.html")
@@ -214,7 +219,17 @@ def showPassword():
 	username = request.form["username"]
 	mobile = session["mobile"]
 	getPass = pyBot.retrievePassword(mobile, website, username)
-	return render_template('showPassword.html', getPass=getPass)
+	getPass = getPass["userpass"]
+	decryptPass = getEncrypt.decryptPassword(getPass)
+	return render_template('showPassword.html', getPass=decryptPass)
+
+@app.route('/addTeamPassword/<teamname>', methods=["POST"])
+def addTeamPassword():
+	if 'login' in session:
+		return render_template('addteampassword.html')
+	else:
+		abort(404)
+
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

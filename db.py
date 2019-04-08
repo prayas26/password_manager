@@ -61,8 +61,6 @@ class Database(object):
 
     def addUserPassword(self, website, userID, userPass, mobile):
         with self.connection.cursor() as cursor:
-            userPass = genpass.User(mobile, userPass)
-            userPass = userPass.pw_hash
             com = "INSERT into u"+mobile+" VALUES('"+website+"', '"+userID+"', '"+userPass+"')"
             cursor.execute(com)
         self.connection.commit()
