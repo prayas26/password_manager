@@ -1,5 +1,4 @@
 from flask import Flask,render_template,request, session, url_for, escape, redirect, abort, make_response
-import key
 import json
 import string
 import random
@@ -10,8 +9,6 @@ import genpass
 import otp_gen
 
 pyBot = db.Database()
-
-api_key = key.key
 
 app=Flask(__name__)
 app.secret_key = "smartBuddy"
@@ -127,7 +124,6 @@ def logout():
 def dashboard():
 	if 'login' in session:
 		getPasswords = pyBot.getUserPassword(session["mobile"])
-		print(getPasswords)
 		return render_template('dashboard.html', getPasswords=getPasswords)
 	else:
 		return redirect(url_for('log_in'))
@@ -136,7 +132,6 @@ def dashboard():
 def teams():
 	if 'login' in session:
 		userTeams = pyBot.checkUserTeams(session["mobile"])
-		print(userTeams)
 		return render_template('teams.html', userTeams=userTeams)
 	else:
 		return redirect(url_for('log_in'))
@@ -212,6 +207,14 @@ def deleteTeam(teamName):
 			abort(404)
 	else:
 		abort(404)
+
+@app.route('/showPassword', methods=["POST"])
+def showPassword():
+	website = request.form["website"]
+	username = request.form["username"]
+	mobile = session["mobile"]
+	getPass = pyBot.retrievePassword(mobile, website, username)
+	return render_template('showPassword.html', getPass=getPass)
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

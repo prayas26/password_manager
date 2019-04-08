@@ -99,6 +99,61 @@ div.desc {
     background-color: #4CAF50;
     color: white;
 }
+
+.button1 {
+  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+  position: relative;
+  padding: 0.8em 1.4em;
+  border: none;
+  color:black;
+  transition: 0.2s;
+  background-color:#0e69d1;
+}
+.button1:before,
+.button1:after {
+  position: absolute;
+  font-family: 'FontAwesome', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  transition: 0.2s;
+  transform-origin: 50% 60%;
+}
+.button1:hover {
+  background: #0edd42;
+}
+.button1:active,
+.button1:focus {
+  background: #05cc47;
+  outline: none;
+}
+
+.button {
+  font-family: "Montserrat", "Trebuchet MS", Helvetica, sans-serif;
+  position: relative;
+  padding: 0.8em .4em;
+  border: none;
+  color:black;
+  transition: 0.2s;
+  background-color:#0e69d1;
+}
+.button:before,
+.button:after {
+  position: absolute;
+  font-family: 'FontAwesome', sans-serif;
+  font-size: 1.2em;
+  text-align: center;
+  transition: 0.2s;
+  transform-origin: 50% 60%;
+}
+.button:hover {
+  background: #d8440a;
+}
+.button:active,
+.button:focus {
+  background: #d8440a;
+  outline: none;
+}
+
 </style>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -118,14 +173,20 @@ div.desc {
                 <th><h1>Website</h1></th>
                 <th><h1>Username</h1></th>
                 <th><h1>Password</h1></th>
+                <th><h1>Delete</h1></th>
             </tr>
         </thead>
         <tbody>
         {% for i in range(getPasswords|count) %}
         <tr>
-			<td>{{ getPasswords[i]["website"] }}</td>
-			<td>{{ getPasswords[i]["username"] }}</td>
-			<td>{{ getPasswords[i]["userpass"] }}</td>
+            <form method="POST">
+                <td>{{ getPasswords[i]["website"] }}</td>
+                <input type="hidden" name="website" value='{{ getPasswords[i]["website"] }}'>
+                <td>{{ getPasswords[i]["username"] }}</td>
+                <input type="hidden" name="username" value='{{ getPasswords[i]["username"] }}'>
+                <td><button class="button1 arrow" formaction="/showPassword">Show Password</button></td>
+                <td><button class="button arrow" formaction="/deletesomething">Delete Password</button></td>
+            </form>
 		</tr>
         {% endfor %}
         </tbody>

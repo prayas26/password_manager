@@ -201,9 +201,12 @@ div.desc {
         <tbody>
         {% for i in range(checkTeam|count) %}
         <tr>
-			<td>{{ checkTeam[i]["website"] }}</td>
-			<td>{{ checkTeam[i]["username"] }}</td>
-			<td>{{ checkTeam[i]["userpass"] }}</td>
+            <form>
+                <td>{{ checkTeam[i]["website"] }}</td>
+                <td>{{ checkTeam[i]["username"] }}</td>
+                <td>{{ checkTeam[i]["userpass"] }}</td>
+                <td><button formaction="/deletesomething">Delete Button</button></td>
+            </form>
 		</tr>
         {% endfor %}
         </tbody>

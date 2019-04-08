@@ -23,7 +23,6 @@ class Database(object):
             userpass = check["password"]
             if genpass.check_password_hash(userpass, user_pass):
                 return check
-
         except:
             return None
 
@@ -49,7 +48,7 @@ class Database(object):
             com = """CREATE TABLE u"""+mobile+"""
                 (website char(50) NOT NULL,
                 username char(50) NOT NULL,
-                userpass char(100) NOT NULL);"""
+                userpass char(200) NOT NULL);"""
             cursor.execute(com)
     
     def createTeamDB(self, team):
@@ -57,11 +56,13 @@ class Database(object):
             com = """CREATE TABLE t_"""+team+"""
                 (website char(50) NOT NULL,
                 username char(50) NOT NULL,
-                userpass char(100) NOT NULL);"""
+                userpass char(200) NOT NULL);"""
             cursor.execute(com)
 
     def addUserPassword(self, website, userID, userPass, mobile):
         with self.connection.cursor() as cursor:
+            userPass = genpass.User(mobile, userPass)
+            userPass = userPass.pw_hash
             com = "INSERT into u"+mobile+" VALUES('"+website+"', '"+userID+"', '"+userPass+"')"
             cursor.execute(com)
         self.connection.commit()
@@ -91,7 +92,6 @@ class Database(object):
     def checkUserTeams(self, userid):
         with self.connection.cursor() as cursor:
             com = "SELECT * from teams WHERE userid='"+userid+"'"
-            print(com)
             cursor.execute(com)
             check = cursor.fetchall()
         return check
@@ -99,7 +99,6 @@ class Database(object):
     def checkTeamAccess(self, userid, teamName):
         with self.connection.cursor() as cursor:
             com = "SELECT * from teams WHERE userid='"+userid+"' and teamName='"+teamName+"'"
-            print(com)
             cursor.execute(com)
             check = cursor.fetchone()
         return check
@@ -124,3 +123,10 @@ class Database(object):
             cursor.execute(com)
         self.connection.commit()
         self.removeTeam(teamName)
+
+    def retrievePassword(self, mobile, website, username):
+        with self.connection.cursor() as cursor:
+            com = "SELECT userpass from u"+mobile+" WHERE website='"+website+"' and username='"+username+"'"
+            cursor.execute(com)
+            checkPass = cursor.fetchone()
+        return checkPass
