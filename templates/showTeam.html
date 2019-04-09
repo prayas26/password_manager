@@ -186,7 +186,7 @@ div.desc {
                 <td>{{ checkTeam[i]["username"] }}</td>
                 <input type="hidden" name="username" value='{{ checkTeam[i]["username"] }}'>
                 <td><button class="button1 arrow" formaction="/showTeamPassword/{{ teamName }}">Show Password</button></td>
-                <td><button class="button arrow" formaction="/deletesomething">Delete Password</button></td>
+                <td><button class="button arrow" formaction="/deleteTeamPassword/{{ teamName }}">Delete Password</button></td>
             </form>
 		</tr>
         {% endfor %}

@@ -133,6 +133,18 @@ def dashboard():
 	else:
 		return redirect(url_for('log_in'))
 
+@app.route('/deleteUserPassword', methods=["POST"])
+def deleteUserPassword():
+	if 'login' in session:
+		website = request.form["website"]
+		username = request.form["username"]
+		mobile = session["mobile"]
+		try:
+			pyBot.deleteUserPass(mobile, website, username)
+			return redirect('/dashboard')
+		except:
+			return render_template("error.html")
+
 @app.route('/teams', methods=["GET"])
 def teams():
 	if 'login' in session:
@@ -253,6 +265,19 @@ def showTeamPassword(teamName):
 	getPass = getPass["userpass"]
 	decryptPass = getEncrypt.decryptPassword(getPass)
 	return render_template('showPassword.html', getPass=decryptPass)
+
+@app.route('/deleteTeamPassword/<teamName>', methods=["POST"])
+def deleteTeamPassword(teamName):
+	if 'login' in session:
+		website = request.form["website"]
+		username = request.form["username"]
+		try:
+			pyBot.deleteTeamPass(teamName, website, username)
+			return redirect('/teams/'+teamName)
+		except:
+			return render_template("error.html")
+	else:
+		abort(404)	
 
 if __name__=='__main__':
 	app.run(debug=True, host="127.0.0.1")

@@ -141,3 +141,15 @@ class Database(object):
             cursor.execute(com)
             checkPass = cursor.fetchone()
         return checkPass
+
+    def deleteTeamPass(self, teamName, website, username):
+        with self.connection.cursor() as cursor:
+            com = "DELETE from t_"+teamName+" WHERE website='"+website+"' and username='"+username+"'"
+            cursor.execute(com)
+        self.connection.commit()
+
+    def deleteUserPass(self, mobile, website, username):
+        with self.connection.cursor() as cursor:
+            com = "DELETE from u"+mobile+" WHERE website='"+website+"' and username='"+username+"'"
+            cursor.execute(com)
+        self.connection.commit()
