@@ -3,9 +3,9 @@ import genpass
 
 class Database(object):
     def __init__(self):
-        self.host = "localhost"
-        self.usrnme = "root"
-        self.pswrd = ""  
+        self.host = "smartbuddy.mysql.database.azure.com"
+        self.usrnme = "smartbuddy@smartbuddy"
+        self.pswrd = "difirence@123"  
         self.dbnme = "smart_password"
         self.connection = pymysql.connect(host=self.host,
                              user=self.usrnme,

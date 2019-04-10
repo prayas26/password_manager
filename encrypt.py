@@ -6,17 +6,6 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.fernet import Fernet
 import key
 
-# password_provided = "password"
-# password = password_provided.encode()
-# salt = b'salt_smartBuddy'
-# kdf = PBKDF2HMAC(
-#     algorithm=hashes.SHA256(),
-#     length=32,
-#     salt=salt,
-#     iterations=100000,
-#     backend=default_backend()
-# )
-
 class Cipher(object):
     def __init__(self):
         self.getKey = key.passKey

@@ -277,7 +277,4 @@ def deleteTeamPassword(teamName):
 		except:
 			return render_template("error.html")
 	else:
-		abort(404)	
-
-if __name__=='__main__':
-	app.run(debug=True, host="127.0.0.1")
+		abort(404)
