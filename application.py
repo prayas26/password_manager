@@ -13,7 +13,7 @@ pyBot = db.Database()
 getEncrypt = encrypt.Cipher()
 
 app=Flask(__name__)
-app.secret_key = "smartBuddy"
+app.secret_key = "passwordMan"
 
 def otp_generator(size=4, chars=string.digits):
     otp = ''.join(random.choice(chars) for _ in range(size))
@@ -42,7 +42,7 @@ def register():
 
 @app.route('/otpconfirm', methods=["POST"])
 def otpconfirm():
-	session["username"] = request.form["username"]
+	session["userid"] = request.form["username"]
 	session["mobile"] = request.form["mobile"]
 	session["password"] = request.form["user_pass"]
 	checkUser = pyBot.checkUser(session["mobile"])
